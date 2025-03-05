@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loop Slider</title>
+
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: loop-scroll 20s linear infinite;
+            width: auto;
+        }
+
+        .slider-items-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: max-content;
+            background-color: rgb(227, 130, 130);
+            padding: 10px 30px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            font-size: 20px;
+            text-transform: capitalize;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        @keyframes loop-scroll {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slider-container">
+        <div class="slider-items-container" area-hidden="true">
+            <div class="item">name 1</div>
+            <div class="item">name 2</div>
+            <div class="item">name 3</div>
+            <div class="item">name 4</div>
+            <div class="item">name 5</div>
+            <div class="item">name 6</div>
+            <div class="item">name 7</div>
+            <div class="item">name 8</div>
+            <div class="item">name 9</div>
+            <div class="item">name 10</div>
+        </div>
+        <div class="slider-items-container" area-hidden="true">
+            <div class="item">name 1</div>
+            <div class="item">name 2</div>
+            <div class="item">name 3</div>
+            <div class="item">name 4</div>
+            <div class="item">name 5</div>
+            <div class="item">name 6</div>
+            <div class="item">name 7</div>
+            <div class="item">name 8</div>
+            <div class="item">name 9</div>
+            <div class="item">name 10</div>
+        </div>
+    </div>
+
+</body>
+
+</html>
