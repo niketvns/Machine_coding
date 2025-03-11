@@ -117,8 +117,8 @@ obj2.name = "Rajesh";
 obj2.nums = [5];
 obj2.details.name = "Gullu";
 
-console.log(obj);
-console.log(obj2);
+// console.log(obj);
+// console.log(obj2);
 
 function deepCopy(object) {
   const newOjb = {};
@@ -133,3 +133,130 @@ function deepCopy(object) {
 
   return newOjb;
 }
+
+// Polyfill for Promise methods
+
+// 1. Promise.any
+Promise.myAny = function (promises) {
+  return new Promise((resolve, reject) => {
+    if (promises?.length === 0) {
+      resolve([]);
+    }
+
+    let counter = 0;
+
+    promises.forEach((promise, index) => {
+      Promise.resolve(promise)
+        .then((res) => {
+          resolve(res);
+        })
+        .catch(() => {
+          counter++;
+
+          if (counter === promises.length) {
+            reject("AggregateError: No Promise in Promise.myAny was resolved");
+          }
+        });
+    });
+  });
+};
+
+// 2. Promise.race
+Promise.myRace = function (promises) {
+  return new Promise((resolve, reject) => {
+    if (promises?.length === 0) {
+      resolve([]);
+    }
+
+    promises.forEach((promise, index) => {
+      Promise.resolve(promise)
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  });
+};
+
+// 3. Promise.all
+Promise.myAll = function (promises) {
+  return new Promise((resolve, reject) => {
+    if (promises?.length === 0) {
+      resolve([]);
+    }
+
+    const results = [];
+    let counter = 0;
+
+    promises.forEach((promise, index) => {
+      Promise.resolve(promise)
+        .then((res) => {
+          results[index] = res;
+          counter++;
+
+          if (counter === promises.length) {
+            resolve(results);
+          }
+        })
+        .catch(reject);
+    });
+  });
+};
+
+// 4. Promise.allSettled
+Promise.myAllSettled = function (promises) {
+  return new Promise((resolve, reject) => {
+    if (promises?.length === 0) {
+      resolve([]);
+    }
+
+    const results = [];
+    let counter = 0;
+
+    promises.forEach((promise, index) => {
+      Promise.resolve(promise)
+        .then((res) => {
+          results[index] = {
+            status: "fulfilled",
+            value: res,
+          };
+          counter++;
+
+          if (counter === promises.length) {
+            resolve(results);
+          }
+        })
+        .catch((error) => {
+          results[index] = {
+            status: "rejected",
+            reason: error,
+          };
+          counter++;
+
+          if (counter === promises.length) {
+            reject(results);
+          }
+        });
+    });
+  });
+};
+
+// Usage
+const p1 = Promise.resolve("P1 Promise Resolved");
+const p2 = Promise.reject("P2 Promise Rejected");
+const p3 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("P3 Promise Resolved");
+  }, 2000);
+});
+const p4 = Promise.reject("P4 Promise Rejected");
+
+Promise.myRace([p1, p2, p3, p4])
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((error) => {
+    console.log("error: ", error);
+  });
